@@ -21,6 +21,14 @@ app.get('/api/v1/tours', (req, res) => {
     .json({ status: 'success', result: tours.length, data: { tours } });
 });
 
+app.get('/api/v1/tours/:id', (req, res) => {
+  console.log(req.params);
+
+  const tour = tours.find((tour) => tour.id + '' === req.params.id);
+  console.log(tour);
+  res.send('s');
+});
+
 app.post('/api/v1/tours', (req, res) => {
   const newId = tours.at(tours.length - 1).id + 1;
   const newTour = { id: newId, ...req.body };
