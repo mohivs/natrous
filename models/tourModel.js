@@ -60,9 +60,9 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(docs);
-});
+// tourSchema.post(/^find/, function (docs, next) {
+//   next();
+// });
 
 tourSchema.pre('aggregate', function (next) {
   this.pipline().unshift({ $match: { secretTour: { $ne: true } } });
