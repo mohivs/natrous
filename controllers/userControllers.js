@@ -1,11 +1,15 @@
 const fs = require('fs');
+const catchAsync = require('../utils/catchAsync');
+const User = require('../models/userModel');
 
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
   res.status(200).json({
     status: 'success',
+    results: users.length,
     data: { users },
   });
-};
+});
 
 exports.createUser = (req, res) => {
   const newId = users.at(tours.length - 1).id + 1;
@@ -20,14 +24,14 @@ exports.createUser = (req, res) => {
         status: 'success',
         data: { user: newUser },
       });
-    }
+    },
   );
 
   // const newUsers =
 };
 
 exports.users = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`, 'utf-8')
+  fs.readFileSync(`${__dirname}/../dev-data/data/users.json`, 'utf-8'),
 );
 
 exports.getUser = (req, res) => {
