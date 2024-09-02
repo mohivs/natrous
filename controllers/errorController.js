@@ -45,6 +45,12 @@ const handelValidationErrorDb = (err) => {
   return new AppError(message, 400);
 };
 
+const handleJWTError = () =>
+  new AppError('invalid token. please login agian', 401);
+
+const handleJWTExpired = () =>
+  new AppError('youre token has expired. please log in again', 401);
+
 module.exports = (err, req, res, next) => {
   // console.log(err.stack);
   err.statusCode = err.statusCode || 500;
@@ -56,11 +62,12 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     // res.status(400).json({ err, error });
-    // console.log(err);
+    // console.log(error.name);
     if (err.name === 'CastError') error = handelCastErrorDb(error);
-
     if (error.code === 11000) error = handelDuplicateFieldsDb(error);
     if (err.name === 'ValidationError') error = handelValidationErrorDb(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
+    if (error.name === 'TokenExpiredError') error = handleJWTExpired(error);
 
     sendErrorPro(error, res);
   }
