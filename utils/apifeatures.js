@@ -18,6 +18,7 @@ class APIFetures {
 
   sort() {
     if (this.queryString.sort) {
+      // console.log(this.queryString.sort);
       this.query = this.query.sort(this.queryString.sort.replaceAll(',', ' '));
     } else {
       this.query = this.query.sort('-createdAt');
