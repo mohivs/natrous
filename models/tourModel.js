@@ -18,7 +18,7 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a difficulty'],
       enum: {
-        values: ['easy medium difficult'],
+        values: ['easy', 'medium', 'difficult'],
         message: 'difficulty niether to be easy or medium od difficult',
       },
     },
@@ -44,6 +44,26 @@ const tourSchema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now(), select: false },
     startDates: [Date],
     secretTour: { type: Boolean, default: false },
+    startLocation: {
+      // GeoJson
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: { type: String, default: 'Point', enum: ['Point'] },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
@@ -56,11 +76,6 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name);
   next();
 });
-
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
 
 // query middleware
 tourSchema.pre(/^find/, function (next) {
