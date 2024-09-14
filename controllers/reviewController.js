@@ -3,13 +3,16 @@ const APIFetures = require('../utils/apifeatures');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
-  const features = new APIFetures(Review.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const reviews = await features.query;
+  // const features = new APIFetures(Review.find(), req.query)
+  //   .filter()
+  //   .sort()
+  //   .limitFields()
+  //   .paginate();
+  // const reviews = await features.query;
+  let filter = {};
+  if (req.params.tourId) filter = { tour: req.params.tourId };
 
+  const reviews = await Review.find(filter);
   res.status(200).json({
     status: 'success',
     results: reviews.length,
