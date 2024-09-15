@@ -14,6 +14,12 @@ const filterObj = (obj, ...allowedfields) => {
   return newObj;
 };
 
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  console.log(req.params.id);
+  next();
+};
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1)create error if user POSTs passsword data
   if (req.body.password || req.body.passwordConfirm) {
@@ -54,10 +60,3 @@ exports.getUser = getOne(User);
 // do not update password with this
 exports.updateUser = updateOne(User);
 exports.deleteUser = deleteOne(User);
-
-// exports.deleteUser = (req, res) => {
-//   res.status(500).json({
-//     status: 'error',
-//     message: 'not yet define',
-//   });
-// };
